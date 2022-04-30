@@ -2,8 +2,8 @@
 # PERSONAL RULES
 
 .vscode/
-.scss
-.map
+*.scss
+*.map
 .sass-cache/
 .node_modules/
 package.json

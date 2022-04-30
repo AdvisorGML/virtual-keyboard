@@ -66,17 +66,17 @@ export default [
   },
   {
     Letter: 'Backspace',
-    LetterShift: null,
+    LetterShift: 'Backspace',
     code: 'Backspace',
   },
   {
     Letter: 'Delete',
-    LetterShift: null,
+    LetterShift: 'Delete',
     code: 'Delete',
   },
   {
     Letter: 'Tab',
-    LetterShift: null,
+    LetterShift: 'Tab',
     code: 'Tab',
   },
   {
@@ -141,12 +141,12 @@ export default [
   },
   {
     Letter: 'Enter',
-    LetterShift: null,
+    LetterShift: 'Enter',
     code: 'Enter',
   },
   {
     Letter: 'CapsLock',
-    LetterShift: null,
+    LetterShift: 'CapsLock',
     code: 'CapsLock',
   },
   {
@@ -211,7 +211,7 @@ export default [
   },
   {
     Letter: 'Shift',
-    LetterShift: null,
+    LetterShift: 'Shift',
     code: 'ShiftLeft',
   },
   {
@@ -271,57 +271,57 @@ export default [
   },
   {
     Letter: 'Shift',
-    LetterShift: null,
+    LetterShift: 'Shift',
     code: 'ShiftRight',
   },
   {
     Letter: 'Ctrl',
-    LetterShift: null,
+    LetterShift: 'Ctrl',
     code: 'ControlLeft',
   },
   {
     Letter: 'Alt',
-    LetterShift: null,
+    LetterShift: 'Alt',
     code: 'AltLeft',
   },
   {
     Letter: ' ',
-    LetterShift: null,
+    LetterShift: ' ',
     code: 'Space',
   },
   {
     Letter: 'Alt',
-    LetterShift: null,
+    LetterShift: 'Alt',
     code: 'AltRight',
   },
   {
     Letter: 'Ctrl',
-    LetterShift: null,
+    LetterShift: 'Ctrl',
     code: 'ControlRight',
   },
   {
     Letter: '&larr;',
-    LetterShift: null,
+    LetterShift: '&larr;',
     code: 'ArrowLeft',
   },
   {
     Letter: '&uarr;',
-    LetterShift: null,
+    LetterShift: '&uarr;',
     code: 'ArrowUp',
   },
   {
     Letter: '&darr;',
-    LetterShift: null,
+    LetterShift: '&darr;',
     code: 'ArrowDown',
   },
   {
     Letter: '&rarr;',
-    LetterShift: null,
+    LetterShift: '&rarr;',
     code: 'ArrowRight',
   },
   {
     Letter: 'Win',
-    LetterShift: null,
+    LetterShift: 'Win',
     code: 'Win',
   },
 ];
