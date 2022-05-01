@@ -5,6 +5,8 @@
 import KeybordRows from './rows.js';
 import Keys from './en.js';
 
+let isCapsLock = false;
+
 const container = document.createElement('div');
 container.className = 'container';
 document.body.append(container);
@@ -64,7 +66,27 @@ function GenerateKeyboard() {
 }
 
 GenerateKeyboard();
-// let isCaps = false;
+
+function toUpperKey(name) {
+  const Key = document.querySelectorAll('.key');
+  Key.forEach((item) => {
+    const element = item;
+    const Letter = element.querySelector(name);
+    if (!element.hasAttribute('data-special')) {
+      Letter.innerHTML = Letter.innerHTML.toUpperCase();
+    }
+  });
+}
+function toLowerKey(name) {
+  const Key = document.querySelectorAll('.key');
+  Key.forEach((item) => {
+    const element = item;
+    const Letter = element.querySelector(name);
+    if (!element.hasAttribute('data-special')) {
+      Letter.innerHTML = Letter.innerHTML.toLowerCase();
+    }
+  });
+}
 
 function KeyDown(event) {
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
@@ -78,15 +100,10 @@ function KeyDown(event) {
       const element = item;
       element.dataset.display = 'false';
     });
-    // console.log(DivLetter);
-    // console.log(DivSubLetter);
+    if (isCapsLock) toLowerKey('.sub-letter');
   }
 
-  // console.log(isCaps);
-  // isCaps = true;
   let str;
-  // console.log('PRESS');
-  console.log(event.code);
   const element = document.querySelector(`[data-key=${event.code}]`);
   element.dataset.class = 'press';
   const OutputArea = document.getElementById('output');
@@ -108,6 +125,16 @@ function KeyDown(event) {
       break;
     case 'ArrowRight':
       str = '→';
+      break;
+    case 'CapsLock':
+      if (!isCapsLock) {
+        isCapsLock = true;
+        toUpperKey('.letter');
+      } else {
+        isCapsLock = false;
+        toLowerKey('.letter');
+      }
+
       break;
     default:
       str = event.key;
@@ -132,12 +159,16 @@ function KeyUp(event) {
       const element = item;
       element.dataset.display = 'true';
     });
+    if (isCapsLock) toUpperKey('.sub-letter');
   }
-
   const element = document.querySelector(`[data-key=${event.code}]`);
   const isSpecial = element.getAttribute('data-special');
   element.dataset.class = 'unpress';
   if (isSpecial === 'true') element.dataset.class = 'special';
+  if (isCapsLock && element.getAttribute('data-key') === 'CapsLock') {
+    element.dataset.class = 'press';
+  }
+  // }
 }
 
 document.addEventListener('keydown', KeyDown);

@@ -151,9 +151,6 @@ $sizePage: 100%;
     box-shadow: 0 2px 5px rgba(81, 42, 236, 0.5), 0 1px 1px rgba(81, 42, 236, 0.45);
     font-weight: 600;
   }
-  // [data-special] {
-  //   background-color: #bbbbbb;
-  // }
   [data-class="special"] {
     background-color: #bbbbbb;
     border: #959595 solid 1px;
@@ -161,18 +158,39 @@ $sizePage: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
   }
   [data-class="press"] {
-    // @include key;
+    // width: 98%;
+    // height: 98%;
     background-color: #c3b8f0;
     border-radius: 20px;
     border: #5e3aec solid 1px;
     box-shadow: 0 2px 5px rgba(81, 42, 236, 0.5), 0 1px 1px rgba(81, 42, 236, 0.45);
     font-weight: 600;
+
+    animation: press 0.5s;
   }
   [data-class="unpress"] {
-    // @include key;
     border: #959595 solid 1px;
     background-color: #dfdfdf;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+  }
+  @keyframes press {
+    0% {
+      opacity: 1;
+      border: #959595 solid 1px;
+      background-color: #dfdfdf;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25), 0 1px 1px rgba(0, 0, 0, 0.22);
+    }
+    100% {
+      opacity: 1;
+      // width: 98%;
+      // height: 98%;
+      background-color: #c3b8f0;
+      border-radius: 20px;
+      border: #5e3aec solid 1px;
+      box-shadow: 0 2px 5px rgba(81, 42, 236, 0.5), 0 1px 1px rgba(81, 42, 236, 0.45);
+      font-weight: 600;
+    }
   }
 }
