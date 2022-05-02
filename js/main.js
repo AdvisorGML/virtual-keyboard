@@ -82,7 +82,7 @@ function GenerateKeyboard() {
   }
 }
 
-GenerateKeyboard();
+// GenerateKeyboard();
 
 function toUpperKey(name) {
   const Key = document.querySelectorAll('.key');
@@ -105,9 +105,7 @@ function toLowerKey(name) {
   });
 }
 function ChangeLanguage() {
-  // let currentLanguage = keyboard.dataset.language;
   const currentLanguage = keyboard.dataset.language;
-  console.log(`CURRENT LANGUAGE: ${currentLanguage}`);
   const LangArr = Object.keys(LanguageSet);
   let Indx = LangArr.indexOf(currentLanguage);
   Keys =
@@ -116,8 +114,6 @@ function ChangeLanguage() {
       : LanguageSet[LangArr[(Indx -= 1)]];
   keyboard.dataset.language = LangArr[Indx];
   StorageSet.set('Advisor-KbrdLang', LangArr[Indx]);
-  // keyboard.innerHTML = '';
-  // GenerateKeyboard();
 
   const Buttons = document.querySelectorAll('.key');
   Buttons.forEach((button) => {
@@ -134,7 +130,7 @@ function ChangeLanguage() {
 }
 
 function KeyDown(event) {
-  console.log(event.code);
+  console.log(event);
   if (event.code.match(/Control/)) isControl = true;
   if (event.code.match(/Alt/)) isAlt = true;
   if (isControl && isAlt) {
@@ -191,6 +187,7 @@ function KeyDown(event) {
     default:
       str = event.key;
   }
+  console.log(event.key);
   const SpecialKey = Boolean(
     event.key.match(/Backspace|Delete|CapsLock|Shift|Control|Win|Alt/)
   );
@@ -227,7 +224,27 @@ function KeyUp(event) {
   // }
 }
 
+function MouseDown(event) {
+  event.stopPropagation();
+  const DivKey = event.target.closest('.key');
+  if (!DivKey) return;
+  const DivKeyCode = DivKey.dataset.key;
+  const Obj = Object({ code: DivKeyCode, key: DivKeyCode });
+  KeyDown(Obj);
+}
+
+function MouseUp(event) {
+  event.stopPropagation();
+  const DivKey = event.target.closest('.key');
+  if (!DivKey) return;
+  const DivKeyCode = DivKey.dataset.key;
+  const Obj = Object({ code: DivKeyCode, key: DivKeyCode });
+  KeyUp(Obj);
+}
+
+GenerateKeyboard();
+
 document.addEventListener('keydown', KeyDown);
 document.addEventListener('keyup', KeyUp);
-// document.addEventListener('mousedown', KeyDown);
-// document.addEventListener('mouseup', KeyUp);
+keyboard.addEventListener('mousedown', MouseDown);
+keyboard.addEventListener('mouseup', MouseUp);
