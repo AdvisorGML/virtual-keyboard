@@ -2,10 +2,25 @@
 /* eslint-disable import/extensions */
 /* eslint-env browser */
 
-import KeybordRows from './rows.js';
-import Keys from './en.js';
+import * as StorageSet from './storageset.js';
+import KeyboardRows from './rows.js';
+import en from './en.js';
+import ru from './ru.js';
+
+const LanguageSet = { en, ru };
+
+let language = StorageSet.get('Advisor-KbrdLang');
+if (language === null) {
+  language = 'en';
+  StorageSet.set('Advisor-KbrdLang', 'en');
+}
+let Keys = LanguageSet[language];
+
+// let Keys = language != null ? LanguageSet[language] : LanguageSet.en;
 
 let isCapsLock = false;
+let isControl = false;
+let isAlt = false;
 
 const container = document.createElement('div');
 container.className = 'container';
@@ -22,9 +37,10 @@ output.innerHTML = '<textarea id="output"></textarea>';
 
 const keyboard = document.createElement('div');
 keyboard.className = 'keyboard';
+keyboard.dataset.language = language;
 container.append(helper, output, keyboard);
 
-// Add Keybord
+// Add Keyboard
 function AddKeys(element, row, keys) {
   element.forEach((el) => {
     const Key = document.createElement('div');
@@ -56,12 +72,13 @@ function AddKeys(element, row, keys) {
   });
 }
 function GenerateKeyboard() {
-  for (let i = 0; i < KeybordRows.length; i += 1) {
+  for (let i = 0; i < KeyboardRows.length; i += 1) {
     const Row = document.createElement('div');
     Row.className = 'keyboard-row';
     Row.dataset.row = i;
-    AddKeys(KeybordRows[i], Row, Keys);
+    AddKeys(KeyboardRows[i], Row, Keys);
     keyboard.append(Row);
+    // output.focus();
   }
 }
 
@@ -87,8 +104,43 @@ function toLowerKey(name) {
     }
   });
 }
+function ChangeLanguage() {
+  // let currentLanguage = keyboard.dataset.language;
+  const currentLanguage = keyboard.dataset.language;
+  console.log(`CURRENT LANGUAGE: ${currentLanguage}`);
+  const LangArr = Object.keys(LanguageSet);
+  let Indx = LangArr.indexOf(currentLanguage);
+  Keys =
+    Indx === 0
+      ? LanguageSet[LangArr[(Indx += 1)]]
+      : LanguageSet[LangArr[(Indx -= 1)]];
+  keyboard.dataset.language = LangArr[Indx];
+  StorageSet.set('Advisor-KbrdLang', LangArr[Indx]);
+  // keyboard.innerHTML = '';
+  // GenerateKeyboard();
+
+  const Buttons = document.querySelectorAll('.key');
+  Buttons.forEach((button) => {
+    if (button.dataset.special !== 'true') {
+      const keyObj = Keys.find((obj) => obj.code === button.dataset.key);
+      const SubLetter = button.querySelector('.sub-letter');
+      const Letter = button.querySelector('.letter');
+      SubLetter.innerHTML = keyObj.LetterShift;
+      Letter.innerHTML = keyObj.Letter;
+      console.log(button.dataset.key);
+    }
+    if (isCapsLock) toUpperKey('.letter');
+  });
+}
 
 function KeyDown(event) {
+  console.log(event.code);
+  if (event.code.match(/Control/)) isControl = true;
+  if (event.code.match(/Alt/)) isAlt = true;
+  if (isControl && isAlt) {
+    console.log('CHANGE LAGUAGE');
+    ChangeLanguage();
+  }
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
     const DivSubLetter = document.querySelectorAll('.sub-letter');
     DivSubLetter.forEach((item) => {
@@ -145,9 +197,13 @@ function KeyDown(event) {
   if (SpecialKey) str = '';
 
   OutputArea.value += str;
+  OutputArea.focus();
 }
 
 function KeyUp(event) {
+  console.log(`KeyUP: ${event.code}`);
+  if (event.code.match(/Control/)) isControl = false;
+  if (event.code.match(/Alt/)) isAlt = false;
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
     const DivSubLetter = document.querySelectorAll('.sub-letter');
     DivSubLetter.forEach((item) => {
