@@ -27,8 +27,7 @@ document.body.append(container);
 
 const helper = document.createElement('div');
 helper.className = 'helper';
-helper.innerHTML =
-  '<h1>VIRTUAL KEYBOARD</h1><p>Use <kbd>Ctrl</kbd> + <kbd>Alt</kbd> to switch language.</p>';
+helper.innerHTML = '<h1>VIRTUAL KEYBOARD</h1><p>Use <kbd>Ctrl</kbd> + <kbd>Alt</kbd> to switch language.</p>';
 
 const output = document.createElement('div');
 output.className = 'output';
@@ -49,8 +48,8 @@ function AddKeys(element, row, keys) {
     Key.dataset.key = el;
     const SpecialKey = Boolean(
       el.match(
-        /Backspace|Tab|Delete|CapsLock|Enter|Shift|Control|Win|Alt|Arrow/
-      )
+        /Backspace|Tab|Delete|CapsLock|Enter|Shift|Control|Win|Alt|Arrow/,
+      ),
     );
     if (SpecialKey) {
       Key.dataset.class = 'special';
@@ -107,10 +106,9 @@ function ChangeLanguage() {
   const currentLanguage = keyboard.dataset.language;
   const LangArr = Object.keys(LanguageSet);
   let Indx = LangArr.indexOf(currentLanguage);
-  Keys =
-    Indx === 0
-      ? LanguageSet[LangArr[(Indx += 1)]]
-      : LanguageSet[LangArr[(Indx -= 1)]];
+  Keys = Indx === 0
+    ? LanguageSet[LangArr[(Indx += 1)]]
+    : LanguageSet[LangArr[(Indx -= 1)]];
   keyboard.dataset.language = LangArr[Indx];
   StorageSet.set('Advisor-KbrdLang', LangArr[Indx]);
 
@@ -178,11 +176,10 @@ function Output(element) {
   OutputArea.value = OutputStr;
   OutputArea.selectionStart = CursorPos;
   OutputArea.selectionEnd = CursorPos;
-  // ;
 }
 
 function KeyDown(event) {
-  console.log(event.type);
+  // console.log(event.type);
   if (event.type === 'keydown') event.preventDefault();
   // console.log(event);
   if (event.code.match(/Control/)) isControl = true;
