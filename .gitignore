@@ -8,7 +8,7 @@
 .node_modules/
 package.json
 package-lock.json
-.eslintrc
+.eslintrc.js
 
 # Logs
 logs
