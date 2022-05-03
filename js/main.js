@@ -1,4 +1,3 @@
-/* eslint no-console: off */
 /* eslint-disable import/extensions */
 /* eslint-env browser */
 
@@ -33,7 +32,7 @@ helper.innerHTML =
 
 const output = document.createElement('div');
 output.className = 'output';
-output.innerHTML = '<textarea id="output"></textarea>';
+output.innerHTML = '<textarea id="output" autofocus spellcheck="false"></textarea>';
 
 const keyboard = document.createElement('div');
 keyboard.className = 'keyboard';
@@ -78,7 +77,7 @@ function GenerateKeyboard() {
     Row.dataset.row = i;
     AddKeys(KeyboardRows[i], Row, Keys);
     keyboard.append(Row);
-    // output.focus();
+    output.focus();
   }
 }
 
@@ -123,20 +122,84 @@ function ChangeLanguage() {
       const Letter = button.querySelector('.letter');
       SubLetter.innerHTML = keyObj.LetterShift;
       Letter.innerHTML = keyObj.Letter;
-      console.log(button.dataset.key);
+      // console.log(button.dataset.key);
     }
     if (isCapsLock) toUpperKey('.letter');
   });
 }
 
+function Output(element) {
+  const OutputArea = document.getElementById('output');
+  const Text = element.querySelector('[data-display="true"]').innerHTML;
+  let OutputStr = OutputArea.value;
+  let CursorPos = OutputArea.selectionStart;
+  const LeftText = OutputArea.value.slice(0, CursorPos);
+  const RightText = OutputArea.value.slice(CursorPos);
+  let isSpecialKey = false;
+  switch (Text) {
+    case 'Tab':
+      OutputStr = `${LeftText}\t${RightText}`;
+      CursorPos += 1;
+      break;
+    case 'Enter':
+      OutputStr = `${LeftText}\n${RightText}`;
+      CursorPos += 1;
+      break;
+    case 'ArrowLeft':
+      OutputStr = '←';
+      break;
+    case 'ArrowUp':
+      OutputStr = '↑';
+      break;
+    case 'ArrowDown':
+      OutputStr = '↓';
+      break;
+    case 'ArrowRight':
+      OutputStr = '→';
+      break;
+    case 'Backspace':
+      OutputStr = `${LeftText.slice(0, -1)}${RightText}`;
+      CursorPos -= 1;
+      break;
+    case 'Delete':
+      OutputStr = `${LeftText}${RightText.slice(1)}`;
+      break;
+    default:
+      isSpecialKey = Boolean(Text.match(/CapsLock|Shift|Ctrl|Win|Alt/));
+      if (isSpecialKey) {
+        OutputStr = `${LeftText}${RightText}`;
+      } else {
+        OutputStr = `${LeftText}${Text}${RightText}`;
+        CursorPos += 1;
+      }
+      break;
+  }
+
+  OutputArea.value = OutputStr;
+  OutputArea.selectionStart = CursorPos;
+  OutputArea.selectionEnd = CursorPos;
+  // ;
+}
+
 function KeyDown(event) {
-  console.log(event);
+  console.log(event.type);
+  if (event.type === 'keydown') event.preventDefault();
+  // console.log(event);
   if (event.code.match(/Control/)) isControl = true;
   if (event.code.match(/Alt/)) isAlt = true;
   if (isControl && isAlt) {
-    console.log('CHANGE LAGUAGE');
     ChangeLanguage();
   }
+  if (event.key === 'CapsLock') {
+    if (!isCapsLock) {
+      isCapsLock = true;
+      toUpperKey('.letter');
+    } else {
+      isCapsLock = false;
+      toLowerKey('.letter');
+    }
+  }
+
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
     const DivSubLetter = document.querySelectorAll('.sub-letter');
     DivSubLetter.forEach((item) => {
@@ -151,54 +214,13 @@ function KeyDown(event) {
     if (isCapsLock) toLowerKey('.sub-letter');
   }
 
-  let str;
   const element = document.querySelector(`[data-key=${event.code}]`);
   element.dataset.class = 'press';
-  const OutputArea = document.getElementById('output');
-  switch (event.key) {
-    case 'Tab':
-      str = '\t';
-      break;
-    case 'Enter':
-      str = '\n';
-      break;
-    case 'ArrowLeft':
-      str = '←';
-      break;
-    case 'ArrowUp':
-      str = '↑';
-      break;
-    case 'ArrowDown':
-      str = '↓';
-      break;
-    case 'ArrowRight':
-      str = '→';
-      break;
-    case 'CapsLock':
-      if (!isCapsLock) {
-        isCapsLock = true;
-        toUpperKey('.letter');
-      } else {
-        isCapsLock = false;
-        toLowerKey('.letter');
-      }
-
-      break;
-    default:
-      str = event.key;
-  }
-  console.log(event.key);
-  const SpecialKey = Boolean(
-    event.key.match(/Backspace|Delete|CapsLock|Shift|Control|Win|Alt/)
-  );
-  if (SpecialKey) str = '';
-
-  OutputArea.value += str;
-  OutputArea.focus();
+  Output(element);
 }
 
 function KeyUp(event) {
-  console.log(`KeyUP: ${event.code}`);
+  // console.log(`KeyUP: ${event.code}`);
   if (event.code.match(/Control/)) isControl = false;
   if (event.code.match(/Alt/)) isAlt = false;
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
@@ -229,7 +251,7 @@ function MouseDown(event) {
   const DivKey = event.target.closest('.key');
   if (!DivKey) return;
   const DivKeyCode = DivKey.dataset.key;
-  const Obj = Object({ code: DivKeyCode, key: DivKeyCode });
+  const Obj = Object({ code: DivKeyCode, key: DivKeyCode, type: 'mousedown' });
   KeyDown(Obj);
 }
 
