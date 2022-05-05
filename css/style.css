@@ -43,10 +43,9 @@
       border: 2px solid #ccc;
       border-radius: 4px;
       background-color: #f8f8f8;
-      font-size: 16px;
       resize: none;
-      font-size: 14px;
-      tab-size: 4; }
+      font-size: 18px;
+      font-family: 'Ubuntu Mono'; }
   .container .keyboard {
     position: absolute;
     display: grid;

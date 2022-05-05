@@ -21,13 +21,11 @@ export default class Keyboard {
 
     this.helper = document.createElement('div');
     this.helper.className = 'helper';
-    this.helper.innerHTML =
-      '<h1>VIRTUAL KEYBOARD</h1><p>Use <kbd>Ctrl</kbd> + <kbd>Alt</kbd> to switch language.</p>';
+    this.helper.innerHTML = '<h1>VIRTUAL KEYBOARD</h1><p>Use <kbd>Ctrl</kbd> + <kbd>Alt</kbd> to switch language.</p>';
 
     this.output = document.createElement('div');
     this.output.className = 'output';
-    this.output.innerHTML =
-      '<textarea id="output" autofocus spellcheck="false"></textarea>';
+    this.output.innerHTML = '<textarea id="output" autofocus spellcheck="false"></textarea>';
 
     this.keyboard = document.createElement('div');
     this.keyboard.className = 'keyboard';
@@ -59,11 +57,7 @@ export default class Keyboard {
       this.Key.dataset.class = 'unpress';
       this.Key.dataset.key = el;
 
-      const SpecialKey = Boolean(
-        el.match(
-          /Backspace|Tab|Delete|CapsLock|Enter|Shift|Control|Win|Alt|Arrow/
-        )
-      );
+      const SpecialKey = Boolean(el.match(/Backspace|Tab|Delete|CapsLock|Enter|Shift|Control|Win|Alt|Arrow/));
       if (SpecialKey) {
         this.Key.dataset.class = 'special';
         this.Key.dataset.special = 'true';
@@ -101,12 +95,12 @@ export default class Keyboard {
     }
 
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-      const DivSubLetter = document.querySelectorAll('.sub-letter');
+      const DivSubLetter = this.keyboard.querySelectorAll('.sub-letter');
       DivSubLetter.forEach((item) => {
         const element = item;
         element.dataset.display = 'true';
       });
-      const DivLetter = document.querySelectorAll('.letter');
+      const DivLetter = this.keyboard.querySelectorAll('.letter');
       DivLetter.forEach((item) => {
         const element = item;
         element.dataset.display = 'false';
@@ -114,7 +108,8 @@ export default class Keyboard {
       if (this.isCapsLock) this.toLowerKey('.sub-letter');
     }
 
-    const element = document.querySelector(`[data-key=${event.code}]`);
+    const element = this.keyboard.querySelector(`[data-key=${event.code}]`);
+    if (!element) return;
     element.dataset.class = 'press';
     this.Output(element);
   };
@@ -123,19 +118,20 @@ export default class Keyboard {
     if (event.code.match(/Control/)) this.isControl = false;
     if (event.code.match(/Alt/)) this.isAlt = false;
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-      const DivSubLetter = document.querySelectorAll('.sub-letter');
+      const DivSubLetter = this.keyboard.querySelectorAll('.sub-letter');
       DivSubLetter.forEach((item) => {
         const element = item;
         element.dataset.display = 'false';
       });
-      const DivLetter = document.querySelectorAll('.letter');
+      const DivLetter = this.keyboard.querySelectorAll('.letter');
       DivLetter.forEach((item) => {
         const element = item;
         element.dataset.display = 'true';
       });
       if (this.isCapsLock) this.toUpperKey('.sub-letter');
     }
-    const element = document.querySelector(`[data-key=${event.code}]`);
+    const element = this.keyboard.querySelector(`[data-key=${event.code}]`);
+    if (!element) return;
     this.isSpecial = element.getAttribute('data-special');
     element.dataset.class = 'unpress';
     if (this.isSpecial === 'true') element.dataset.class = 'special';
@@ -174,7 +170,7 @@ export default class Keyboard {
   };
 
   toUpperKey = (name) => {
-    this.Key = document.querySelectorAll('.key');
+    this.Key = this.keyboard.querySelectorAll('.key');
     this.Key.forEach((item) => {
       const element = item;
       const Letter = element.querySelector(name);
@@ -185,7 +181,7 @@ export default class Keyboard {
   };
 
   toLowerKey = (name) => {
-    this.Key = document.querySelectorAll('.key');
+    this.Key = this.keyboard.querySelectorAll('.key');
     this.Key.forEach((item) => {
       const element = item;
       const Letter = element.querySelector(name);
@@ -199,14 +195,11 @@ export default class Keyboard {
     const currentLanguage = this.keyboard.dataset.language;
     const LangArr = Object.keys(LanguageSet);
     let Indx = LangArr.indexOf(currentLanguage);
-    this.Keys =
-      Indx === 0
-        ? LanguageSet[LangArr[(Indx += 1)]]
-        : LanguageSet[LangArr[(Indx -= 1)]];
+    this.Keys = Indx === 0 ? LanguageSet[LangArr[(Indx += 1)]] : LanguageSet[LangArr[(Indx -= 1)]];
     this.keyboard.dataset.language = LangArr[Indx];
     StorageSet.set('Advisor-KbrdLang', LangArr[Indx]);
 
-    const Buttons = document.querySelectorAll('.key');
+    const Buttons = this.keyboard.querySelectorAll('.key');
     Buttons.forEach((button) => {
       if (button.dataset.special !== 'true') {
         const keyObj = this.Keys.find((obj) => obj.code === button.dataset.key);
