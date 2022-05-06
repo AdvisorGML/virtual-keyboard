@@ -320,8 +320,8 @@ export default [
     code: 'ArrowRight',
   },
   {
-    Letter: 'Win',
-    LetterShift: 'Win',
-    code: 'Win',
+    Letter: '<div class="icon"></div>',
+    LetterShift: '<div class="icon"></div>',
+    code: 'LNG',
   },
 ];

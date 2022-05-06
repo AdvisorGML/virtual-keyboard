@@ -57,7 +57,7 @@ export default class Keyboard {
       this.Key.dataset.class = 'unpress';
       this.Key.dataset.key = el;
 
-      const SpecialKey = Boolean(el.match(/Backspace|Tab|Delete|CapsLock|Enter|Shift|Control|Win|Alt|Arrow/));
+      const SpecialKey = Boolean(el.match(/Backspace|Tab|Delete|CapsLock|Enter|Shift|Control|LNG|Alt|Arrow/));
       if (SpecialKey) {
         this.Key.dataset.class = 'special';
         this.Key.dataset.special = 'true';
@@ -81,6 +81,9 @@ export default class Keyboard {
     if (event.type === 'keydown') event.preventDefault();
     if (event.code.match(/Control/)) this.isControl = true;
     if (event.code.match(/Alt/)) this.isAlt = true;
+    if (event.type === 'mousedown' && event.code === 'LNG') {
+      this.ChangeLanguage();
+    }
     if (this.isControl && this.isAlt) {
       this.ChangeLanguage();
     }
@@ -249,7 +252,7 @@ export default class Keyboard {
         OutputStr = `${LeftText}${RightText.slice(1)}`;
         break;
       default:
-        this.isSpecialKey = Boolean(Text.match(/CapsLock|Shift|Ctrl|Win|Alt/));
+        this.isSpecialKey = Boolean(Text.match(/CapsLock|Shift|Ctrl|icon|Alt/));
         if (this.isSpecialKey) {
           OutputStr = `${LeftText}${RightText}`;
         } else {

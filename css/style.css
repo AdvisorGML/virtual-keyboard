@@ -45,7 +45,7 @@
       background-color: #f8f8f8;
       resize: none;
       font-size: 18px;
-      font-family: 'Ubuntu Mono'; }
+      font-family: "Ubuntu Mono"; }
   .container .keyboard {
     position: absolute;
     display: grid;
@@ -89,11 +89,26 @@
     .container .key .letter {
       text-align: center;
       width: 100%; }
+      .container .key .letter img {
+        width: 20px;
+        height: 20px; }
+      .container .key .letter .icon {
+        background-image: url("../assets/images/Language.svg");
+        width: 20px;
+        height: 20px;
+        background-size: 20px; }
     .container .key .sub-letter {
       text-align: center;
       width: 100%; }
+      .container .key .sub-letter .icon {
+        background-image: url("../assets/images/Language.svg");
+        width: 20px;
+        height: 20px;
+        background-size: 20px; }
     .container .key [data-display="true"] {
-      display: block; }
+      display: flex;
+      align-items: center;
+      justify-content: center; }
     .container .key [data-display="false"] {
       display: none; }
   .container .key:hover {
