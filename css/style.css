@@ -96,7 +96,8 @@
         background-image: url("../assets/images/Language.svg");
         width: 20px;
         height: 20px;
-        background-size: 20px; }
+        background-size: 20px;
+        color: #00000000; }
     .container .key .sub-letter {
       text-align: center;
       width: 100%; }
@@ -104,7 +105,8 @@
         background-image: url("../assets/images/Language.svg");
         width: 20px;
         height: 20px;
-        background-size: 20px; }
+        background-size: 20px;
+        color: #00000000; }
     .container .key [data-display="true"] {
       display: flex;
       align-items: center;

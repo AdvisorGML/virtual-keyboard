@@ -1,6 +1,6 @@
 {
   "name": "virtual-keyboard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "RS-SCHOOL Virtual-keyboard task",
   "main": "./js/main.js",
   "scripts": {
